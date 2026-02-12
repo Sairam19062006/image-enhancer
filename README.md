@@ -1,114 +1,129 @@
-# Image Editor
+# Full Stack Image Editor
 
-A simple yet powerful Python-based image enhancement tool that automatically processes and enhances images in bulk.
+A powerful web-based image enhancement tool featuring a React frontend and Flask backend. This application allows users to upload images, apply enhancements (sharpening, contrast adjustment), and download the processed results.
 
 ## Features
 
-- **Batch Processing**: Automatically processes all images in a specified directory
-- **Image Sharpening**: Applies sharpening filter to improve image clarity
-- **Contrast Enhancement**: Increases contrast by 20% for more vivid images
-- **Format Support**: Handles JPG, PNG, and JPEG formats
-- **Auto-conversion**: Converts images to RGB color mode for consistent processing
-- **Organized Output**: Saves enhanced images to a separate directory with clear naming
+- **Frontend**: Modern React interface built with Vite and Tailwind CSS (via Lucide React).
+- **Backend**: Robust Flask server handling image processing with Pillow.
+- **Image Processing**:
+    - Automatic sharpening.
+    - Adjustable contrast enhancement.
+    - Format conversion to RGB/JPEG.
+- **User Interface**:
+    - Drag-and-drop image upload.
+    - Real-time preview.
+    - Customizable enhancement settings.
+
+## Tech Stack
+
+### Frontend
+- **Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: CSS Modules / Standard CSS
+- **Icons**: Lucide React
+- **HTTP Client**: Native Fetch API
+
+### Backend
+- **Framework**: Flask
+- **Image Processing**: Pillow (PIL Fork)
+- **CORS**: Flask-CORS
 
 ## Prerequisites
 
-Before running this project, make sure you have Python installed along with the required dependencies:
-
-```bash
-pip install Pillow
-```
+- **Python**: 3.8 or higher
+- **Node.js**: 16.0 or higher
+- **npm** (usually comes with Node.js)
 
 ## Project Structure
 
 ```
-img_editor/
-├── img_editor.py          # Main script
-├── images/                # Input folder (place your original images here)
-├── enhancedimages/        # Output folder (auto-created, contains processed images)
-└── README.md              # Project documentation
+projects/img_editor/
+├── backend/               # Flask server and image processing logic
+│   ├── app.py             # Main application entry point
+│   ├── requirements.txt   # Python dependencies
+│   ├── uploads/           # Temporary storage for uploaded images
+│   └── processed/         # Temporary storage for processed images
+├── frontend/              # React frontend application
+│   ├── src/               # Source code
+│   ├── public/            # Static assets
+│   ├── package.json       # Node.js dependencies
+│   └── vite.config.js     # Vite configuration
+└── README.md              # This file
 ```
 
-## Installation
+## Setup Instructions
 
-1. Clone this repository:
-```bash
-git clone https://github.com/yourusername/img_editor.git
-cd img_editor
-```
+### 1. Backend Setup
 
-2. Install the required dependencies:
-```bash
-pip install Pillow
-```
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
 
-3. Create the input directory and add your images:
-```bash
-mkdir -p images
-# Add your images to the images/ folder
-```
+2. Create a virtual environment (optional but recommended):
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+3. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Start the Flask server:
+   ```bash
+   python app.py
+   ```
+   The backend will start on `http://localhost:5000`.
+
+### 2. Frontend Setup
+
+1. Open a new terminal and navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install Node.js dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   The frontend will usually start on `http://localhost:5173`.
 
 ## Usage
 
-1. Place your images (JPG, PNG, or JPEG) in the `images/` directory
+1. Ensure both backend and frontend servers are running.
+2. Open your browser and go to the frontend URL (e.g., `http://localhost:5173`).
+3. Click "Upload Image" or drag and drop an image file.
+4. Adjust the "Contrast Factor" if desired.
+5. Click "Process Image".
+6. Once processed, the enhanced image will automatically prompt for download.
 
-2. Run the script:
-```bash
-python img_editor.py
-```
+## API Documentation
 
-3. Find your enhanced images in the `enhancedimages/` directory with `_enhanced.jpg` suffix
+### `POST /process`
 
-## How It Works
+Processes an uploaded image with the specified parameters.
 
-The script performs the following operations on each image:
+- **URL**: `/process`
+- **Method**: `POST`
+- **Content-Type**: `multipart/form-data`
+- **Form Data**:
+    - `image`: The image file to process (File).
+    - `contrast`: Contrast enhancement factor (Float, default: 1.2).
+- **Response**: Returns the processed image as a file attachment.
 
-1. **Reads** all image files from the `images/` directory
-2. **Converts** images to RGB color mode
-3. **Applies** a sharpening filter to enhance edge definition
-4. **Increases** contrast by 20% (factor of 1.2)
-5. **Saves** the processed images with `_enhanced.jpg` naming convention
+## Development
 
-## Example
-
-**Before:**
-```
-images/photo.jpg
-```
-
-**After:**
-```
-enhancedimages/photo_enhanced.jpg
-```
-
-The enhanced image will have improved sharpness and contrast while maintaining the original's quality.
-
-## Customization
-
-You can customize the enhancement parameters by modifying the following variables in `img_editor.py`:
-
-- **Contrast Factor**: Change `factor = 1.2` (1.0 = original, >1.0 = more contrast)
-- **Input Path**: Modify `path = './images'`
-- **Output Path**: Modify `pathto = './enhancedimages'`
-- **Additional Filters**: Add more PIL ImageFilter options (BLUR, DETAIL, EDGE_ENHANCE, etc.)
-
-## Dependencies
-
-- **Python 3.x**
-- **Pillow (PIL)**: Image processing library
+- **Backend**: The `app.py` file contains the route definitions and image processing logic. Modified images are saved temporarily in `backend/processed`.
+- **Frontend**: The React app is structured with components in `src/components`. `App.jsx` handles the main state and layout.
 
 ## License
 
 This project is open source and available under the MIT License.
-
-## Contributing
-
-Contributions are welcome! Feel free to submit issues or pull requests to improve the functionality.
-
-## Author
-
-Created as part of a Python automation project.
-
-## Acknowledgments
-
-- Built with [Pillow](https://python-pillow.org/) - The friendly PIL fork
